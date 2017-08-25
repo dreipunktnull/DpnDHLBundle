@@ -1,0 +1,164 @@
+{% extends '@WebProfiler/Profiler/layout.html.twig' %}
+
+{% block toolbar %}
+    {% set icon %}
+        {{ include('@DpnDHL/DataCollectors/car.svg') }}
+        <span class="sf-toolbar-value">{{ collector.actions }}</span>
+        <span class="sf-toolbar-label">DHL</span>
+    {% endset %}
+
+    {% set text %}
+        <div class="sf-toolbar-info-piece">
+            <b>Actions</b>
+            <span>{{ collector.actions }}</span>
+        </div>
+
+        <div class="sf-toolbar-info-piece">
+            <b>Shipments Created</b>
+            <span>{{ collector.created | length }}</span>
+        </div>
+
+        <div class="sf-toolbar-info-piece">
+            <b>Shipments Manifested</b>
+            <span>{{ collector.manifested | length }}</span>
+        </div>
+
+        <div class="sf-toolbar-info-piece">
+            <b>Shipments Manifested</b>
+            <span>{{ collector.canceled | length }}</span>
+        </div>
+    {% endset %}
+
+    {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: true }) }}
+{% endblock %}
+
+{% block menu %}
+    {# This left-hand menu appears when using the full-screen profiler. #}
+
+    <span class="label {% if collector.actions == 0 %}disabled{% endif %}">
+        <span class="icon">{{ include('@DpnDHL/DataCollectors/car.svg') }}</span>
+        <strong>DHL</strong>
+        {% if collector.actions != 0 %}
+            <span class="count">{{ collector.actions }}</span>
+        {% endif %}
+    </span>
+{% endblock %}
+
+{% block panel %}
+    <h2>DHL API Interactions</h2>
+
+    <div class="metrics">
+        <div class="metric">
+            <span class="value">{{ collector.actions }}</span>
+            <span class="label">API Interactions</span>
+        </div>
+        <div class="metric">
+            <span class="value">{{ collector.created | length }}</span>
+            <span class="label">Shipments Created</span>
+        </div>
+        <div class="metric">
+            <span class="value">{{ collector.manifested | length }}</span>
+            <span class="label">Shipments Manifested</span>
+        </div>
+        <div class="metric">
+            <span class="value">{{ collector.canceled | length }}</span>
+            <span class="label">Shipments Canceled</span>
+        </div>
+    </div>
+
+    <p class="help">Those actions were recorded using the AuditableBusinessShipmentService</p>
+
+    <h2>Shipment Details</h2>
+
+    {% if collector.actions == 0 %}
+        <div class="empty">
+            <p>No API actions were recorded.</p>
+        </div>
+    {% else %}
+        <div class="sf-tabs">
+            <div class="tab">
+                <h3 class="tab-title">Shipments created <span class="badge">{{ collector.created | length }}</span></h3>
+
+                <div class="tab-content">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Reference</th>
+                            <th>Details</th>
+                            <th>Sender</th>
+                            <th>Receiver</th>
+                            <th>Label Response Type</th>
+                            <th>Timing</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {% for shipment in collector.created %}
+                                <tr>
+                                    <td>{{ dump(shipment.reference) }}</td>
+                                    <td>{{ dump(shipment.details) }}</td>
+                                    <td>{{ dump(shipment.sender) }}</td>
+                                    <td>{{ dump(shipment.receiver) }}</td>
+                                    <td>{{ shipment.labelResponseType }}</td>
+                                    <td>{{ shipment.timing }}</td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="6">No shipments</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="tab">
+                <h3 class="tab-title">Shipments manifested <span class="badge">{{ collector.manifested | length }}</span></h3>
+
+                <div class="tab-content">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Shipment number</th>
+                            <th>Status</th>
+                            <th>Timing</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for shipment in collector.manifested %}
+                        {% else %}
+                            <tr>
+                                <td colspan="3">No shipments</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="tab">
+                <h3 class="tab-title">Shipments canceled <span class="badge">{{ collector.canceled | length }}</span></h3>
+
+                <div class="tab-content">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Shipment number</th>
+                            <th>Status</th>
+                            <th>Timing</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for shipment in collector.canceled %}
+                        {% else %}
+                            <tr>
+                                <td colspan="3">No shipments</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    {% endif %}
+{% endblock %}

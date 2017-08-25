@@ -1,0 +1,15 @@
+{
+    "name": "dreipunktnull/dhl-bundle",
+    "description": "Integrate the DHL Shipping API into your Symfony 2 project",
+    "type": "symfony-bundle",
+    "require": {
+        "symfony/symfony": "^3.3"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Cedric Ziel",
+            "email": "ziel@dreipunktnull.com"
+        }
+    ]
+}
