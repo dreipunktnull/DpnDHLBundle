@@ -9,6 +9,7 @@ use Petschko\DHL\Response;
 use Petschko\DHL\Sender;
 use Petschko\DHL\Service;
 use Petschko\DHL\ShipmentDetails;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class BusinessShipmentService implements BusinessShipmentServiceInterface
 {
@@ -22,9 +23,15 @@ class BusinessShipmentService implements BusinessShipmentServiceInterface
      */
     protected $testMode;
 
-    public function __construct(Credentials $dhlCredentials)
+    /**
+     * @var EventDispatcherInterface
+     */
+    protected $dispatcher;
+
+    public function __construct(EventDispatcherInterface $dispatcher, Credentials $dhlCredentials)
     {
         $this->dhlCredentials = $dhlCredentials;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
