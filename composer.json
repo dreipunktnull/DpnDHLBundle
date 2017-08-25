@@ -12,5 +12,10 @@
             "name": "Cedric Ziel",
             "email": "ziel@dreipunktnull.com"
         }
-    ]
+    ],
+    "autoload": {
+        "psr-4": {
+            "Dpn\\DHLBundle\\": ""
+        }
+    }
 }
