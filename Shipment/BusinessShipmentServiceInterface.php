@@ -19,7 +19,13 @@ interface BusinessShipmentServiceInterface
      *
      * @return BusinessShipment
      */
-    public function createShipment($reference, Sender $sender, Receiver $receiver, ShipmentDetails $shipmentDetails, $labelResponseType);
+    public function buildShipment($reference, Sender $sender, Receiver $receiver, ShipmentDetails $shipmentDetails, $labelResponseType);
+
+    /**
+     * @param BusinessShipment $shipment
+     * @return Response
+     */
+    public function createShipment(BusinessShipment $shipment);
 
     /**
      * @param string $shipmentNumber

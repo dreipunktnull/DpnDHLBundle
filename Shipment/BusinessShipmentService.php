@@ -53,7 +53,7 @@ class BusinessShipmentService implements BusinessShipmentServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function createShipment($reference, Sender $sender, Receiver $receiver, ShipmentDetails $shipmentDetails, $labelResponseType = BusinessShipment::RESPONSE_TYPE_URL)
+    public function buildShipment($reference, Sender $sender, Receiver $receiver, ShipmentDetails $shipmentDetails, $labelResponseType = BusinessShipment::RESPONSE_TYPE_URL)
     {
         $dhl = new BusinessShipment($this->dhlCredentials, $this->testMode, '2.2');
         $dhl->setCustomAPIURL('https://cig.dhl.de/cig-wsdls/com/dpdhl/wsdl/geschaeftskundenversand-api/2.2/geschaeftskundenversand-api-2.2.wsdl');
@@ -70,6 +70,12 @@ class BusinessShipmentService implements BusinessShipmentServiceInterface
         $dhl->setLabelResponseType($labelResponseType);
 
         return $dhl;
+    }
+
+    /** {@inheritdoc} */
+    public function createShipment(BusinessShipment $shipment)
+    {
+        return $shipment->createShipment();
     }
 
     /**
