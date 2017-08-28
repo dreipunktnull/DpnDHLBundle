@@ -31,11 +31,12 @@ class DhlClientDataCollector extends DataCollector
      */
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
+        $this->data['built'] = $this->shipmentService->getShipmentsBuilt();
         $this->data['created'] = $this->shipmentService->getShipmentsCreated();
         $this->data['canceled'] = $this->shipmentService->getShipmentsCanceled();
         $this->data['manifested'] = $this->shipmentService->getShipmentsManifested();
 
-        $this->data['actions'] = (int) (count($this->data['created']) + count($this->data['canceled']) + count($this->data['manifested']));
+        $this->data['actions'] = (int) (count($this->data['built']) + count($this->data['created']) + count($this->data['canceled']) + count($this->data['manifested']));
     }
 
     /**
@@ -56,6 +57,14 @@ class DhlClientDataCollector extends DataCollector
     public function getActions()
     {
         return $this->data['actions'];
+    }
+
+    /**
+     * @return array
+     */
+    public function getBuilt()
+    {
+        return $this->data['built'];
     }
 
     /**
