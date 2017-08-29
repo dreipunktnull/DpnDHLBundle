@@ -43,6 +43,7 @@ interface BusinessShipmentServiceInterface
 
     /**
      * @param string $shipmentNumber
+     * @param string $type
      */
-    public function getLabel($shipmentNumber);
+    public function getLabel($shipmentNumber, $type = BusinessShipment::RESPONSE_TYPE_URL);
 }
