@@ -116,7 +116,7 @@ class BusinessShipmentService implements BusinessShipmentServiceInterface
     {
         $dhl = new BusinessShipment($this->dhlCredentials, $this->testMode, '2.2');
         $dhl->setCustomAPIURL('https://cig.dhl.de/cig-wsdls/com/dpdhl/wsdl/geschaeftskundenversand-api/2.2/geschaeftskundenversand-api-2.2.wsdl');
-        $dhl->setLabelResponseType(BusinessShipment::RESPONSE_TYPE_URL);
+        $dhl->setLabelResponseType($type);
 
         $response = $dhl->getShipmentLabel($shipmentNumber);
 
