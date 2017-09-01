@@ -3,6 +3,8 @@
     "description": "Integrate the DHL Shipping API into your Symfony 2 project",
     "type": "symfony-bundle",
     "require": {
+        "php": "^7.0",
+        "dreipunktnull/dhl-shipment-tracking": "dev-master",
         "symfony/symfony": "^3.3",
         "petschko/dhl-php-sdk": "dev-master"
     },
