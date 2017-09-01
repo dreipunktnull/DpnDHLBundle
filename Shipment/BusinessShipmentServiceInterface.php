@@ -23,6 +23,7 @@ interface BusinessShipmentServiceInterface
 
     /**
      * @param BusinessShipment $shipment
+     *
      * @return Response
      */
     public function createShipment(BusinessShipment $shipment);

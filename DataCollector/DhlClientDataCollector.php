@@ -3,6 +3,7 @@
 namespace Dpn\DHLBundle\DataCollector;
 
 use Dpn\DHLBundle\Shipment\AuditableBusinessShipmentService;
+use Dpn\DHLBundle\Tracker\AuditableShipmentTracking;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
@@ -15,11 +16,18 @@ class DhlClientDataCollector extends DataCollector
     private $shipmentService;
 
     /**
-     * @param AuditableBusinessShipmentService $shipmentService
+     * @var AuditableShipmentTracking
      */
-    public function __construct(AuditableBusinessShipmentService $shipmentService)
+    private $tracking;
+
+    /**
+     * @param AuditableBusinessShipmentService $shipmentService
+     * @param AuditableShipmentTracking        $tracking
+     */
+    public function __construct(AuditableBusinessShipmentService $shipmentService, AuditableShipmentTracking $tracking)
     {
         $this->shipmentService = $shipmentService;
+        $this->tracking = $tracking;
     }
 
     /**
@@ -35,8 +43,19 @@ class DhlClientDataCollector extends DataCollector
         $this->data['created'] = $this->shipmentService->getShipmentsCreated();
         $this->data['canceled'] = $this->shipmentService->getShipmentsCanceled();
         $this->data['manifested'] = $this->shipmentService->getShipmentsManifested();
+        $this->data['trackings_getpiece'] = $this->tracking->getPiecesRetrieved();
+        $this->data['trackings_getpiecedetail'] = $this->tracking->getPiecesDetailRetrieved();
+        $this->data['trackings_getpiecepublic'] = $this->tracking->getPiecesPublicRetrieved();
 
-        $this->data['actions'] = (int) (count($this->data['built']) + count($this->data['created']) + count($this->data['canceled']) + count($this->data['manifested']));
+        $this->data['actions'] = (
+            count($this->data['built'])
+            + count($this->data['created'])
+            + count($this->data['canceled'])
+            + count($this->data['manifested'])
+            + count($this->data['trackings_getpiece'])
+            + count($this->data['trackings_getpiecedetail'])
+            + count($this->data['trackings_getpiecepublic'])
+        );
     }
 
     /**
@@ -89,5 +108,29 @@ class DhlClientDataCollector extends DataCollector
     public function getCanceled()
     {
         return $this->data['canceled'];
+    }
+
+    /**
+     * @return array
+     */
+    public function getTrackingsGetPiece()
+    {
+        return $this->data['trackings_getpiece'];
+    }
+
+    /**
+     * @return array
+     */
+    public function getTrackingsGetPieceDetail()
+    {
+        return $this->data['trackings_getpiecedetail'];
+    }
+
+    /**
+     * @return array
+     */
+    public function getTrackingsGetPiecePublic()
+    {
+        return $this->data['trackings_getpiecepublic'];
     }
 }

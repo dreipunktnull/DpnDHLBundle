@@ -5,6 +5,7 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
+        <!-- Business Shipment services -->
         <service id="dpn.dhl.credentials" class="Petschko\DHL\Credentials">
             <argument></argument> <!-- will be filled in with testmode dynamically -->
         </service>
@@ -14,8 +15,22 @@
             <argument type="service" id="dpn.dhl.credentials"/>
         </service>
 
+        <!-- Tracking -->
+        <service id="dpn.dhl.tracking.credentials" class="DPN\DHLShipmentTracking\Credentials">
+            <argument></argument>
+            <argument></argument>
+            <argument type="constant" >DPN\DHLShipmentTracking\Credentials::ENDPOINT_SANDBOX</argument>
+            <argument></argument>
+            <argument></argument>
+        </service>
+
+        <service id="dpn.dhl.tracking.shipment_tracking" class="DPN\DHLShipmentTracking\ShipmentTracking">
+            <argument type="service" id="dpn.dhl.tracking.credentials" />
+        </service>
+
         <service id="dpn.dhl.data_collector.api" class="Dpn\DHLBundle\DataCollector\DhlClientDataCollector">
             <argument type="service" id="dpn.dhl.shipment.business_shipment"/>
+            <argument type="service" id="dpn.dhl.tracking.shipment_tracking"/>
             <tag name="data_collector" template="DpnDHLBundle:DataCollectors:Api.html.twig" id="dpn_dhl.api_collector"/>
         </service>
     </services>

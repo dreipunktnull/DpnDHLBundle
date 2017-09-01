@@ -32,6 +32,13 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('password')->isRequired()->end()
                     ->end()
                 ->end()
+                ->arrayNode('tracking')
+                    ->children()
+                        ->booleanNode('use_sandbox')->defaultTrue()->end()
+                        ->scalarNode('user')->isRequired()->end()
+                        ->scalarNode('password')->isRequired()->end()
+                    ->end()
+                ->end()
             ->end()
         ;
 
