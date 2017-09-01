@@ -85,17 +85,17 @@ class DpnDHLExtension extends Extension
         if (true === $container->has('dpn.dhl.tracking.credentials')) {
             $trackingCredentialsDef = $container->getDefinition('dpn.dhl.tracking.credentials');
 
-            $trackingCredentialsDef->setArgument(0, $config['user']);
-            $trackingCredentialsDef->setArgument(1, $config['password']);
+            $trackingCredentialsDef->replaceArgument(0, $config['user']);
+            $trackingCredentialsDef->replaceArgument(1, $config['password']);
 
             if (true === $config['tracking']['use_sandbox']) {
-                $trackingCredentialsDef->setArgument(2, Credentials::ENDPOINT_SANDBOX);
-                $trackingCredentialsDef->setArgument(3, 'dhl_entwicklerportal');
-                $trackingCredentialsDef->setArgument(4, 'Dhl_123!');
+                $trackingCredentialsDef->replaceArgument(2, Credentials::ENDPOINT_SANDBOX);
+                $trackingCredentialsDef->replaceArgument(3, 'dhl_entwicklerportal');
+                $trackingCredentialsDef->replaceArgument(4, 'Dhl_123!');
             } else {
-                $trackingCredentialsDef->setArgument(2, Credentials::ENDPOINT_PRODUCTION);
-                $trackingCredentialsDef->setArgument(3, $config['tracking']['user']);
-                $trackingCredentialsDef->setArgument(4, $config['tracking']['password']);
+                $trackingCredentialsDef->replaceArgument(2, Credentials::ENDPOINT_PRODUCTION);
+                $trackingCredentialsDef->replaceArgument(3, $config['tracking']['user']);
+                $trackingCredentialsDef->replaceArgument(4, $config['tracking']['password']);
             }
         }
 
